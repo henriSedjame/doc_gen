@@ -7,7 +7,7 @@
 }
 
 .model_bloc {
-  width: 70%;
+  width: 500px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -15,7 +15,6 @@
   border: 1px solid blueviolet;
   padding: 10px;
   margin-bottom: 10px;
-
 
   &.treeOnly {
     width: 100%;
@@ -74,6 +73,9 @@
     display: flex;
     justify-content: end;
     align-items: center;
+    margin-top: 20px;
+    border-top: 1px solid blueviolet;
+    padding-top: 10px;
 
     &.center {
       justify-content: center;
@@ -115,6 +117,7 @@
     }
 
   }
+
   .field_btns {
     width: 120px;
     display: flex;
@@ -141,9 +144,9 @@
   }
 
 }
+
 .form_container {
 
-  margin-top: 30px;
   background-color: #a4f6ca;
   padding: 15px 15px 20px 15px;
   border-radius: 5px;

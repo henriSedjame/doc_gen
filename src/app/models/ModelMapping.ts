@@ -6,7 +6,7 @@ export type ModelMapping<T extends Model> = {
     [K in keyof T]: FieldMapping<T[K]>;
 }
 
-export type FieldMapping<T extends Model| FieldType> = {
+export type FieldMapping<T extends Model | FieldType> = {
     [K in keyof T]: T extends Model ? FieldMapping<T[K]> : SingleFieldMapping;
 }
 

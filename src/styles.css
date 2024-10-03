@@ -53,13 +53,13 @@ select:focus {
   }
 
   &.cancel_btn {
-    background-color: gray;
-    color: white;
+    background-color: lightgray;
+    color: gray;
     border: 1px solid blueviolet;
     margin-right: 10px;
 
     &:hover {
-      background-color: gray;
+      background-color: lightgray;
     }
   }
   .icon {

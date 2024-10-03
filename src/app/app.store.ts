@@ -11,6 +11,7 @@ export type NamedModel = {
   name: string;
   value: Model;
 }
+
 export type IndexedModel = {
   name: string;
   value: {
