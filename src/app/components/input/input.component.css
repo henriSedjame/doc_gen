@@ -1,0 +1,40 @@
+.input_bloc {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  .input_btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 45px;
+    height: 45px;
+
+    border: 1px solid blueviolet;
+    color: blueviolet;
+    border-radius: 5px;
+    cursor: pointer;
+
+    font-size: 1.5rem;
+
+    &:hover {
+      background-color: blueviolet;
+      color: white;
+    }
+
+    &.disabled {
+      background-color: lightgray;
+      color: gray;
+      cursor: default;
+      border: 1px solid gray;
+    }
+
+    &.undo_btn {
+      background-color: #f1b36c;
+      color: white;
+      border: 1px solid #f1a855;
+    }
+  }
+
+}

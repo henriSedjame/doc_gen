@@ -1,0 +1,183 @@
+:host {
+  width: 100%;
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+}
+
+.model_bloc {
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid blueviolet;
+  padding: 10px;
+  margin-bottom: 10px;
+
+
+  &.treeOnly {
+    width: 100%;
+    border: none;
+    margin-bottom: 0;
+
+    .fields_bloc {
+      .field_bloc {
+        .field_name {
+          cursor: default;
+        }
+      }
+    }
+
+  }
+
+  &.selected {
+    height: max-content;
+    padding: 10px;
+
+    .title_bloc {
+      border-bottom: 1px solid blueviolet;
+      padding-bottom: 10px;
+      margin-bottom: 10px;
+    }
+  }
+
+  .title_bloc {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+
+    .model_title {
+      font-size: 1.2rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      color: blueviolet;
+    }
+
+    .del_icon {
+      color: darkred;
+      cursor: pointer;
+      padding: 2px;
+      border-radius: 3px;
+
+      &:hover {
+        box-shadow: 1px 0 2px #505050;
+      }
+    }
+  }
+
+  .btn_bloc {
+    width: 100%;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+
+    &.center {
+      justify-content: center;
+    }
+  }
+}
+
+.fields_bloc {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: start;
+  justify-content: center;
+
+  .field_bloc{
+    width: calc(100% - 20px);
+
+    .field_name {
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .model {
+      width: 100%;
+      margin-left: 20px;
+    }
+
+    .type {
+      text-transform: lowercase;
+      font-style: italic;
+    }
+
+    .plus , .minus {
+      color: blueviolet;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 1rem;
+    }
+
+  }
+  .field_btns {
+    width: 120px;
+    display: flex;
+    justify-content: space-between;
+    gap: 5px;
+    padding: 3px 5px;
+    background-color: #f1f8f1;
+    border-radius: 5px;
+    border: 1px solid blueviolet;
+
+    .edit_icon {
+      color: blueviolet;
+      cursor: pointer;
+    }
+
+    .transform_icon {
+      color: forestgreen;
+      cursor: pointer;
+    }
+    .del_icon {
+      color: darkred;
+      cursor: pointer;
+    }
+  }
+
+}
+.form_container {
+
+  margin-top: 30px;
+  background-color: #a4f6ca;
+  padding: 15px 15px 20px 15px;
+  border-radius: 5px;
+
+  .form_title {
+    width: 100%;
+    text-align: center;
+    color: white;
+    font-family: "Al Bayan", sans-serif;
+    font-size: 1.1rem;
+    text-shadow: 1px 1px 1px #505050;
+  }
+  .form_field {
+    position: relative;
+    margin: 10px 0;
+
+    .label {
+      position: absolute;
+      font-size: 0.5rem;
+      font-weight: bold;
+      color: blueviolet;
+      top: -10px;
+    }
+  }
+
+  .form_btns {
+    display: flex;
+    justify-content: space-between;
+    gap: 5px;
+
+    .btn {
+      flex: 1;
+    }
+  }
+}
+
+

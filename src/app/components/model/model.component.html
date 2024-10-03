@@ -1,0 +1,99 @@
+<div [id]="model().name" class="model_bloc" [ngClass]="blocClass()">
+
+  @if (!showOnlyTree()) {
+    <div class="title_bloc" (click)="doSelect()">
+      <div class="model_title">{{ model().name }}</div>
+      <span class="material-symbols-outlined del_icon" (click)="delete.emit()">delete</span>
+    </div>
+  }
+
+  @if (selected() || showOnlyTree()) {
+    <div class="fields_bloc">
+      @for (field of fields(); track $index) {
+        <div class="field_bloc">
+          @if (isModel(field.value)) {
+
+            @if( state.fieldExpanded() === field.key) {
+              <span class="minus" (click)="collapse()"> - </span>
+              <span class="field_name" (click)="selectField(field.key)"> {{ field.key }} </span> :
+              <div class="model">
+                <app-model
+                  [model]="{ name: modelOf(field.key).name,  value: modelOf(field.key).value
+            }"
+                  [showOnlyTree]="true"
+                />
+              </div>
+            } @else {
+              <span class="plus" (click)="expand(field.key)"> + </span>
+              <span class="field_name" (click)="selectField(field.key)"> {{ field.key }} </span> :
+              <a [href]="'#'+modelOf(field.key).name">{{briefModel(field.key)}}</a>
+            }
+
+          } @else {
+            - <span class="field_name" (click)="selectField(field.key)"> {{ field.key }} </span>:
+            <span class="type">{{ field.value }}</span>
+          }
+
+        </div>
+        @if(!showOnlyTree() && state.fieldSelected() === field.key) {
+          <div class="field_btns" >
+            <span class="material-symbols-outlined edit_icon" (click)="editField(field)">edit_square </span>
+            <span class="material-symbols-outlined transform_icon" > transform </span>
+            <span class="material-symbols-outlined del_icon" (click)="removeField.emit(field.key)"> delete_forever </span>
+
+          </div>
+        }
+      }
+    </div>
+
+    @if (!showOnlyTree()) {
+      <div class="btn_bloc" [ngClass]="state.addingField() ? 'center' : ''">
+        @if (state.addingField()) {
+
+          <div class="form_container">
+
+            <div class="form_title"> ADD NEW FIELD</div>
+
+            <form [formGroup]="form" (submit)="doAddField()">
+
+              <div class="form_field">
+                <div class="label">FIELD NAME</div>
+                <input
+                  placeholder="Field name"
+                  formControlName="key"
+                />
+              </div>
+
+              <div class="form_field">
+                <div class="label">FIELD TYPE</div>
+                <select
+                  formControlName="type">
+                  @for (type of store.fieldTypeSimpleOptions(); track $index) {
+                    <option class="option" [value]="type.value">{{ type.label }}</option>
+                  }
+
+                  @for (type of store.fieldTypeComplexOptions(); track $index) {
+                    <option class="option" [value]="type.label">{{ type.label.toUpperCase() }}</option>
+                  }
+
+                </select>
+              </div>
+
+              <div class="form_btns">
+                <button class="btn cancel_btn" type="button" (click)="endAddingNewField()"> CANCEL</button>
+                <button class="btn" type="submit" [disabled]="!form.valid"> SUBMIT</button>
+              </div>
+
+
+            </form>
+          </div>
+
+        } @else {
+          <div class="btn" (click)="startAddingNewField()"> Add field</div>
+        }
+
+      </div>
+    }
+  }
+
+</div>

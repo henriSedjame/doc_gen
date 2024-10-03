@@ -1,0 +1,9 @@
+<div class="input_bloc">
+  <span class="material-symbols-outlined input_btn undo_btn" (click)="cancel.emit()">undo</span>
+  <input #valueInput
+         type="text"
+         [placeholder]="placeholder()"
+         (input)="onInput.emit(valueInput.value)"
+  />
+  <span class="material-symbols-outlined input_btn"  [ngClass]="sendBtnClass()" (click)="send.emit()">send</span>
+</div>

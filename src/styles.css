@@ -1,1 +1,75 @@
 /* You can add global styles to this file, and also import other style files */
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 20px;
+  gap: 10px;
+}
+input {
+  width: 400px;
+  height: 43px;
+  border-radius: 5px;
+  border: 1px solid lightgray;
+  padding-left: 15px;
+  font-size: 1rem;
+}
+
+select {
+  width: 420px;
+  height: 43px;
+  border-radius: 5px;
+  border: 1px solid lightgray;
+  padding-left: 15px;
+  font-size: 1rem;
+}
+
+input::placeholder {
+  color: #9a9a9a;
+}
+
+input:focus {
+  outline: blueviolet 1px solid;
+}
+
+select:focus {
+  outline: blueviolet 1px solid;
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid blueviolet;
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 5px 10px 5px 5px;
+  font-weight: lighter;
+
+  &:hover {
+    background-color: blueviolet;
+    color: white;
+  }
+
+  &.cancel_btn {
+    background-color: gray;
+    color: white;
+    border: 1px solid blueviolet;
+    margin-right: 10px;
+
+    &:hover {
+      background-color: gray;
+    }
+  }
+  .icon {
+    font-size: 1.5rem;
+  }
+}
+
+.btn:disabled {
+  background-color: lightgray;
+  color: gray;
+  cursor: default;
+  border: 1px solid gray;
+}
