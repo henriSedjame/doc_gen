@@ -19,18 +19,24 @@ export type IndexedModel = {
   }
 }
 
+export type AddDataType = 'dataset' | 'model';
+
 export type AppState = {
+  datasets: string[];
   models: NamedModel[];
   indexedModels: IndexedModel[];
   selectedIndex: number | null;
   addingNewModel: boolean;
+  addDataType: AddDataType | null;
 }
 
 export const initialState: AppState = {
+  datasets: [],
   models: [],
   indexedModels: [],
   selectedIndex: null,
   addingNewModel: false,
+  addDataType: null
 }
 
 export const AppStore = signalStore(
@@ -73,9 +79,10 @@ export const AppStore = signalStore(
       return map;
     }),
   })),
+
   withMethods(state => ({
 
-    add: (name: string) => {
+    addModel(name: string) {
       if (state.models().map(m => m?.name?.toLowerCase()).includes(name.toLowerCase())) {
         alert('Model already exists')
       } else if(Object.values(FieldType).map(m => m.toString().toLowerCase()).includes(name.toLowerCase())) {
@@ -172,14 +179,32 @@ export const AppStore = signalStore(
       })
     },
 
-    startAddNewModel() {
-      updateState(state, 'startAdd model', {addingNewModel: true})
+    startAddingData(type: AddDataType) {
+      updateState(state, `start adding data : ${type}`, { addDataType: type });
     },
 
-    endAddNewModel() {
-      updateState(state, 'endAdd model', {addingNewModel: false})
+    endAddingData() {
+      updateState(state, 'end adding data', { addDataType: null });
     },
 
+    addDataset(name: string) {
+      if (state.datasets().includes(name.toLowerCase())) {
+        alert('Dataset already exists')
+      }else {
+        updateState(state, 'add dataset', {
+          datasets: [
+            ...state.datasets(),
+            name.toLowerCase()
+          ]
+        })
+      }
+    },
+
+    removeDataset(dataset: string) {
+      updateState(state, 'remove dataset', {
+        datasets: state.datasets().filter(d => d !== dataset)
+      })
+    },
     storeState() {
 
       const object = {};

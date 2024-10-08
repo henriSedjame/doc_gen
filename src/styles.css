@@ -1,5 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
 
+html {
+  height: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: sans-serif;
+}
+
 form {
   display: flex;
   flex-direction: column;
@@ -7,6 +17,7 @@ form {
   margin-top: 20px;
   gap: 10px;
 }
+
 input {
   width: 400px;
   height: 43px;

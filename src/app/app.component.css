@@ -3,13 +3,154 @@
   width: 100vw;
   height: 100vh;
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: start;
-  padding: 30px;
+  position: relative;
 }
 
-.add_model_bloc {
-  padding-bottom: 50px;
+#datasets {
+  flex: 1;
+  height: 100%;
+  background-color: #e4d6ec;
+  padding: 0;
+
+  .dataset_title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: white;
+    margin: 0;
+    padding-left: 5px;
+
+    background-color: blueviolet;
+
+    span {
+      font-size: 4rem;
+      cursor: pointer;
+      height: 60px;
+      width:  60px;
+      background-color: #a4f6ca;
+      color: blueviolet;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+
+
+      &:active {
+        box-shadow: inset 1px 1px 3px #3c3a3a, inset -1px -1px 1px #3c3a3a;
+      }
+    }
+
+  }
+
+  .datasets_bloc {
+    padding-top: 10px;
+
+    .dataset {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 5px;
+      background-color: #d7e6e1;
+
+      margin-bottom: 5px;
+
+      .dataset_icon_name {
+        display: flex;
+        align-items: end;
+        justify-content: center;
+        .dataset_icon {
+          font-size: 2rem;
+          color:  #2a292b;
+        }
+        .dataset_name {
+          text-transform: uppercase;
+          font-size: 1rem;
+          font-weight: bold;
+          color: #2a292b;
+          padding-bottom: 4px;
+        }
+      }
+
+      .del_icon {
+        color: darkred;
+        cursor: pointer;
+        padding: 2px;
+        border-radius: 3px;
+
+        &:hover {
+          box-shadow: 1px 0 2px #505050;
+        }
+      }
+
+    }
+  }
 }
 
+#models {
+  flex: 3;
+  height: 100%;
+
+  .model_list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: 30px;
+
+  }
+
+}
+
+#mappings {
+  flex: 4;
+  height: 100%;
+  background-color:  #e4d6ec;
+}
+#add_data_form {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.62);
+
+  position: absolute;
+  top: -100%;
+  z-index: 100;
+
+  display: flex;
+  align-items: start;
+  justify-content: center;
+  transition: all 0.5s;
+
+  .form_bloc {
+    width: 500px;
+
+    background-color: white;
+    border-radius: 0 0 10px 10px;
+    box-shadow: 1px 1px 2px #505050;
+    padding: 25px 0 15px 0;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    gap: 20px;
+
+    .form_btns {
+      display: flex;
+      justify-content: space-between;
+      padding: 0 10px;
+      width: calc(100% - 20px);
+      gap: 5px;
+
+
+      .btn {
+        flex: 1;
+      }
+    }
+  }
+
+  &.visible {
+    top:0;
+  }
+}

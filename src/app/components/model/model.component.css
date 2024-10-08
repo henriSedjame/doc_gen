@@ -1,10 +1,4 @@
-:host {
-  width: 100%;
-  display: flex;
 
-  align-items: center;
-  justify-content: center;
-}
 
 .model_bloc {
   width: 500px;
@@ -143,6 +137,14 @@
     }
   }
 
+  .empty {
+    width: 100%;
+    text-align: center;
+    font-size: 1.1rem;
+    color: rgba(128, 128, 128, 0.78);
+    font-style: italic;
+    padding-top: 8px;
+  }
 }
 
 .form_container {

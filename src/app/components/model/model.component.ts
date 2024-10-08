@@ -1,5 +1,5 @@
 import {Component, computed, inject, input, output} from '@angular/core';
-import {NgClass} from '@angular/common';
+import {NgClass, NgStyle} from '@angular/common';
 import {AppStore, NamedModel} from '../../app.store';
 import {patchState, signalState} from '@ngrx/signals';
 import {InputComponent} from '../input/input.component';
@@ -26,7 +26,8 @@ const initialState: State = {
   imports: [
     InputComponent,
     NgClass,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgStyle
   ],
   templateUrl: './model.component.html',
   styleUrl: './model.component.css'

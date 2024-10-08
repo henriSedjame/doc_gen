@@ -1,31 +1,72 @@
 <div class="content">
-  <div class="add_model_bloc">
-    @if (store.addingNewModel()) {
-      <app-input
-        [valid]="inputValid()"
-        placeholder="Enter the model name"
-        (onInput)="onInput($event)"
-        (send)="addModel()"
-        (cancel)="store.endAddNewModel()"
-      />
 
-    } @else {
-      <div (click)="store.startAddNewModel()" class="btn">
-        <span class="material-symbols-outlined icon">add</span>
-        Add new model
-      </div>
-    }
+  <div id="datasets">
+    <app-title-bloc
+      icon="database"
+      title="DATASETS"
+      (add)="store.startAddingData('dataset')"
+    />
+
+     <div class="datasets_bloc">
+       @for (dataset of store.datasets(); track $index) {
+         <div class="dataset">
+           <div class="dataset_icon_name">
+             <span class="material-symbols-outlined dataset_icon">folder_open</span>
+             <span class="dataset_name">{{dataset}}</span>
+           </div>
+
+           <span class="material-symbols-outlined del_icon" (click)="store.removeDataset(dataset)">delete</span>
+         </div>
+       }
+     </div>
   </div>
 
-  @for (model of store.models(); track $index) {
-    <app-model
-      [model]="model"
-      [selected]="store.selectedIndex() === $index"
-      (delete)="store.delete($index)"
-      (addField)="store.addField($index, $event)"
-      (removeField)="store.removeField($index, $event)"
-      (select)="store.select($index)"
+  <div id="models">
+    <app-title-bloc
+      icon="account_tree"
+      title="MODELS"
+      (add)="store.startAddingData('model')"
     />
-  }
 
+    <div class="model_list">
+      @for (model of store.models(); track $index) {
+        <app-model
+          [model]="model"
+          [selected]="store.selectedIndex() === $index"
+          (delete)="store.delete($index)"
+          (addField)="store.addField($index, $event)"
+          (removeField)="store.removeField($index, $event)"
+          (select)="store.select($index)"
+        />
+      }
+    </div>
+
+  </div>
+
+  <div id="mappings">
+    <app-title-bloc
+      icon="transform"
+      title="MAPPINGS"
+      [canAdd]="false"
+    />
+  </div>
+  <div id="add_data_form" [ngClass]="formClass()">
+
+    <div class="form_bloc">
+      <input
+        #input
+        [placeholder]="placeholder()"
+        [value]="state().editingValue"
+        (input)="onInput(input.value)"
+      />
+
+      <div class="form_btns">
+        <button class="btn cancel_btn" type="button" (click)="endAddingData()">CANCEL</button>
+        <button class="btn" [disabled]="!inputValid()" (click)="addData()">SUBMIT</button>
+      </div>
+    </div>
+
+  </div>
 </div>
+
+

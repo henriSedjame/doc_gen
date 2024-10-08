@@ -43,6 +43,8 @@
 
           </div>
         }
+      } @empty {
+        <div class="empty">No fields</div>
       }
     </div>
 
@@ -72,8 +74,9 @@
                     <option class="option" [value]="type.value">{{ type.label }}</option>
                   }
 
+                  <option class="option"   disabled>────────────────────────</option>
                   @for (type of store.fieldTypeComplexOptions(); track $index) {
-                    <option class="option" [value]="type.label">{{ type.label.toUpperCase() }}</option>
+                    <option class="option" [value]="type.label" >{{ type.label.toUpperCase() }}</option>
                   }
 
                 </select>
