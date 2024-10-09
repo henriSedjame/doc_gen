@@ -1,55 +1,130 @@
 <div class="content">
 
-  <div id="datasets">
+  <div id="datasets" [ngClass]="datasetClass()">
     <app-title-bloc
       icon="database"
       title="DATASETS"
+      [collapsed]="datasetCollapsed()"
       (add)="store.startAddingData('dataset')"
     />
 
-     <div class="datasets_bloc">
-       @for (dataset of store.datasets(); track $index) {
-         <div class="dataset">
-           <div class="dataset_icon_name">
-             <span class="material-symbols-outlined dataset_icon">folder_open</span>
-             <span class="dataset_name">{{dataset}}</span>
-           </div>
+    @if (!datasetCollapsed()) {
+      <div class="datasets_bloc">
+        @for (dataset of store.datasets(); track $index) {
+          <div class="dataset">
+            <div class="dataset_icon_name">
+              <span class="material-symbols-outlined dataset_icon">folder_open</span>
+              <span class="dataset_name">{{ dataset }}</span>
+            </div>
 
-           <span class="material-symbols-outlined del_icon" (click)="store.removeDataset(dataset)">delete</span>
-         </div>
-       }
-     </div>
-  </div>
+            <span class="material-symbols-outlined del_icon" (click)="store.removeDataset(dataset)">delete</span>
+          </div>
+        }
+      </div>
+    } @else {
+      <div class="vertical_title up"> DATASETS</div>
+    }
 
-  <div id="models">
-    <app-title-bloc
-      icon="account_tree"
-      title="MODELS"
-      (add)="store.startAddingData('model')"
-    />
-
-    <div class="model_list">
-      @for (model of store.models(); track $index) {
-        <app-model
-          [model]="model"
-          [selected]="store.selectedIndex() === $index"
-          (delete)="store.delete($index)"
-          (addField)="store.addField($index, $event)"
-          (removeField)="store.removeField($index, $event)"
-          (select)="store.select($index)"
-        />
+    <div class="collapse_icon border_right">
+      @if (datasetCollapsed()) {
+        <span class="material-symbols-outlined" (click)="expand('datasets')">arrow_forward_ios</span>
+      } @else {
+        <span class="material-symbols-outlined" (click)="collapse('datasets')">arrow_back_ios</span>
       }
     </div>
 
   </div>
 
-  <div id="mappings">
+  <div id="models" [ngClass]="modelsClass()">
+    <app-title-bloc
+      icon="account_tree"
+      title="MODELS"
+      [collapsed]="modelsCollapsed()"
+      (add)="store.startAddingData('model')"
+    />
+
+    @if (!modelsCollapsed()) {
+      <div class="model_list">
+        @for (model of store.models(); track $index) {
+          <app-model
+            [model]="model"
+            [selected]="store.selectedIndex() === $index"
+            (delete)="store.delete($index)"
+            (addField)="store.addField($index, $event)"
+            (removeField)="store.removeField($index, $event)"
+            (select)="store.select($index)"
+          />
+        }
+      </div>
+    } @else {
+      <div class="vertical_title"> MODELS</div>
+    }
+
+    <div class="collapse_icon border_right">
+      @if (modelsCollapsed()) {
+        <span class="material-symbols-outlined" (click)="expand('models')">arrow_forward_ios</span>
+      } @else {
+        <span class="material-symbols-outlined" (click)="collapse('models')">arrow_back_ios</span>
+      }
+    </div>
+
+  </div>
+
+  <div id="mappings" [ngClass]="mappingsClass()">
     <app-title-bloc
       icon="transform"
       title="MAPPINGS"
+      [collapsed]="mappingsCollapsed()"
       [canAdd]="false"
     />
+
+    @if (!mappingsCollapsed()) {
+
+      <div class="mapping_list">
+
+        <div class="dataset_selector">
+          <div class="label"> DATASETS</div>
+          <select #select (change)="selectDataset(select.value)">
+            <option></option>
+            @for (dataset of store.datasets(); track $index) {
+              <option>{{ dataset }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mappings_bloc">
+          @for (mapping of mappings(); track $index) {
+            @for (map of transform(mapping.mappings); track $index) {
+              <div>
+                <div class="model_name">{{ map.model }}</div>
+
+                <div class="model_mappings">
+                  @for (field of map.fields; track $index) {
+                    <div class="model_mapping">
+                      <div>{{ field.fieldName }}</div>
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+          }
+        </div>
+
+
+      </div>
+    } @else {
+      <div class="vertical_title up"> MAPPINGS</div>
+    }
+
+    <div class="collapse_icon">
+      @if (mappingsCollapsed()) {
+        <span class="material-symbols-outlined" (click)="expand('mappings')">arrow_forward_ios</span>
+      } @else {
+        <span class="material-symbols-outlined" (click)="collapse('mappings')">arrow_back_ios</span>
+      }
+    </div>
   </div>
+
   <div id="add_data_form" [ngClass]="formClass()">
 
     <div class="form_bloc">

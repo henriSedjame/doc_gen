@@ -11,5 +11,6 @@ export class TitleBlocComponent {
   title = input.required<string>()
   icon = input.required<string>()
   canAdd = input<boolean>(true)
+  collapsed = input.required<boolean>()
   add = output<void>()
 }
