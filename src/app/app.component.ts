@@ -6,19 +6,20 @@ import {NgClass} from '@angular/common';
 import {InputComponent} from './components/input/input.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {TitleBlocComponent} from './components/title-bloc/title-bloc.component';
+import {FieldMappingComponent} from './components/field-mapping/field-mapping.component';
 
 type Section = 'models' | 'datasets' | 'mappings'
 
 type State = {
   editingValue: string | null;
   collapsed: Section[],
-  selectedDataset: string | null
+  selectedModelMapping: string | null
 }
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [ModelComponent, NgClass, InputComponent, FormsModule, ReactiveFormsModule, TitleBlocComponent],
+  imports: [ModelComponent, NgClass, InputComponent, FormsModule, ReactiveFormsModule, TitleBlocComponent, FieldMappingComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
@@ -33,7 +34,7 @@ export class AppComponent {
   state = signalState<State>({
     editingValue: null,
     collapsed: ['datasets'],
-    selectedDataset: null
+    selectedModelMapping: null
   })
 
   inputValid = computed(() => (this.state.editingValue()?.length ?? 0) >= 3)
@@ -54,10 +55,12 @@ export class AppComponent {
   }))
 
   datasetCollapsed = computed(() => this.state.collapsed().includes('datasets'))
+
   modelsCollapsed = computed(() => this.state.collapsed().includes('models'))
+
   mappingsCollapsed = computed(() => this.state.collapsed().includes('mappings'))
 
-  mappings = computed(() => this.store.mappings().filter(m => m.dataset === this.state.selectedDataset()))
+  mappings = computed(() => this.store.mappings().filter(m => m.dataset === this.store.selectedDataset()))
 
   datasetClass = computed(() => ({
     expanded: !this.datasetCollapsed(),
@@ -119,30 +122,29 @@ export class AppComponent {
   }
 
   selectDataset(dataset: string) {
-    patchState(this.state, { selectedDataset: dataset })
+    this.store.selectDataset(dataset)
   }
-
 
   transform(mappings: FieldMapping[]) : { model: string, fields: FieldMapping[]}[]{
 
     let result: {model: string, fields: FieldMapping[]}[] = []
 
     mappings.forEach(mapping => {
-      let [model, field] = mapping.fieldName.split('.')
+      let model = mapping.fieldName.split('.')[0]
       let existing = result.find(r => r.model === model)
       if (existing) {
-        existing.fields.push({
-          fieldName: field,
-          mapping: mapping.mapping
-        })
+        existing.fields.push(mapping)
       } else {
-        result.push({model, fields: [{fieldName: field, mapping: mapping.mapping}]})
+        result.push({model, fields: [mapping]})
       }
     })
 
     return result
   }
 
+  selectModelMapping(model: string) {
+    patchState(this.state, { selectedModelMapping : this.state.selectedModelMapping() === model ? null : model })
+  }
 
   @HostListener('window:beforeunload')
   onWindowUnload() {

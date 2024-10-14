@@ -1,0 +1,65 @@
+<div class="mapping_bloc">
+  <div class="field_name">
+    <span (click)="store.selectFieldMapping(fieldMapping().fieldName)">- {{ fieldMapping().fieldName.replace(modelName() + '.', '') }}</span>
+    @if (!fieldMapping().mapping) {
+      <app-add-btn (onClick)="editMapping()"/>
+    }
+  </div>
+
+  @if (state.editingMapping()) {
+    <div class="form_bloc">
+      <div class="form_container">
+
+        <div class="form_title"> EDIT MAPPING</div>
+
+        <form [formGroup]="simpleForm" (submit)="submit()">
+
+          <div class="form_field">
+            <div class="label">ORIGIN</div>
+            <input
+              placeholder="Mapping origin"
+              formControlName="originTree"
+            />
+          </div>
+
+          <div class="form_field">
+            <div class="label">MAPPING DESCRIPTION</div>
+            <textarea formControlName="description"></textarea>
+          </div>
+          <div class="form_btns">
+            <button class="btn cancel_btn" type="button" (click)="cancel()"> CANCEL</button>
+            <button class="btn" type="submit" [disabled]="!simpleForm.valid">SUBMIT</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  } @else if (fieldMapping().mapping && store.selectedFieldMapping() === fieldMapping().fieldName) {
+    <div class="mapping_view">
+      <div class="mapping_view_bloc">
+
+        @if (isSimpleMapping()) {
+
+          <div class="mapping_field_line">
+            <div class="mapping_field_name"> origin :</div>
+            <div class="mapping_field_value">
+              @for(i of simpleMapping().originTree.split('.'); track $index) {
+                <span>{{i}}</span> @if(!$last) {<span class="arrow">➞</span>}
+              }
+            </div>
+          </div>
+          <div class="mapping_field_line">
+            <div class="mapping_field_name"> description :</div>
+            <div class="mapping_field_value large"> {{ simpleMapping().description }}</div>
+          </div>
+        } @else {
+        }
+      </div>
+      <span class="material-symbols-outlined edit_icon" (click)="editMapping()">edit_square </span>
+    </div>
+
+
+
+  }
+
+
+</div>

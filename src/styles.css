@@ -15,16 +15,25 @@ input {
   height: 43px;
   border-radius: 5px;
   border: 1px solid lightgray;
-  padding-left: 15px;
+  padding-left: 5px;
   font-size: 1rem;
 }
 
 select {
-  width: 420px;
+  width: 410px;
   height: 43px;
   border-radius: 5px;
   border: 1px solid lightgray;
-  padding-left: 15px;
+  padding-left: 5px;
+  font-size: 1rem;
+}
+
+textarea {
+  width: 400px;
+  height: 100px;
+  border-radius: 5px;
+  border: 1px solid lightgray;
+  padding-left: 5px;
   font-size: 1rem;
 }
 
@@ -40,6 +49,10 @@ select:focus {
   outline: blueviolet 1px solid;
 }
 
+
+textarea:focus {
+  outline: blueviolet 1px solid;
+}
 .btn {
   display: flex;
   align-items: center;

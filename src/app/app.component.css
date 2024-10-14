@@ -64,22 +64,22 @@
       justify-content: space-between;
       padding: 5px;
       background-color: #d7e6e1;
-
+      cursor: pointer;
       margin-bottom: 5px;
+      color: gray;
 
       .dataset_icon_name {
         display: flex;
         align-items: end;
         justify-content: center;
+        gap: 4px;
         .dataset_icon {
           font-size: 2rem;
-          color:  #2a292b;
         }
         .dataset_name {
           text-transform: uppercase;
           font-size: 1rem;
           font-weight: bold;
-          color: #2a292b;
           padding-bottom: 4px;
         }
       }
@@ -93,6 +93,11 @@
         &:hover {
           box-shadow: 1px 0 2px #505050;
         }
+      }
+
+      &.selected {
+        background-color: #a4f6ca;
+        color: #292929;
       }
 
     }
@@ -153,11 +158,36 @@
 
       .label {
         position: absolute;
-        top: -15px;
+        top: -18px;
         left: 4px;
         font-size: 0.7rem;
         color: blueviolet;
 
+      }
+    }
+
+    .mappings_bloc {
+      width: 98%;
+      margin: 10px;
+
+      .model_mapping {
+        background-color: rgba(255, 255, 255, 0.67);
+        margin-bottom: 5px;
+
+
+        .model_name {
+          display: flex;
+          align-items: center;
+          justify-content: start;
+          text-transform: uppercase;
+          font-weight: bold;
+          color: blueviolet;
+          gap: 5px;
+          padding: 4px 5px;
+          border: 1px solid blueviolet;
+
+          cursor: pointer;
+        }
       }
     }
   }

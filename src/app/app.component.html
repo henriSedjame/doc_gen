@@ -11,12 +11,11 @@
     @if (!datasetCollapsed()) {
       <div class="datasets_bloc">
         @for (dataset of store.datasets(); track $index) {
-          <div class="dataset">
+          <div class="dataset" (click)="store.selectDataset(dataset)" [ngClass]="store.selectedDataset() === dataset ? 'selected' : ''">
             <div class="dataset_icon_name">
               <span class="material-symbols-outlined dataset_icon">folder_open</span>
               <span class="dataset_name">{{ dataset }}</span>
             </div>
-
             <span class="material-symbols-outlined del_icon" (click)="store.removeDataset(dataset)">delete</span>
           </div>
         }
@@ -47,12 +46,9 @@
       <div class="model_list">
         @for (model of store.models(); track $index) {
           <app-model
+            [index]="$index"
             [model]="model"
-            [selected]="store.selectedIndex() === $index"
             (delete)="store.delete($index)"
-            (addField)="store.addField($index, $event)"
-            (removeField)="store.removeField($index, $event)"
-            (select)="store.select($index)"
           />
         }
       </div>
@@ -84,7 +80,7 @@
 
         <div class="dataset_selector">
           <div class="label"> DATASETS</div>
-          <select #select (change)="selectDataset(select.value)">
+          <select #select (change)="selectDataset(select.value)" [value]="store.selectedDataset()">
             <option></option>
             @for (dataset of store.datasets(); track $index) {
               <option>{{ dataset }}</option>
@@ -95,16 +91,24 @@
         <div class="mappings_bloc">
           @for (mapping of mappings(); track $index) {
             @for (map of transform(mapping.mappings); track $index) {
-              <div>
-                <div class="model_name">{{ map.model }}</div>
-
-                <div class="model_mappings">
-                  @for (field of map.fields; track $index) {
-                    <div class="model_mapping">
-                      <div>{{ field.fieldName }}</div>
-                    </div>
-                  }
+              <div class="model_mapping">
+                <div class="model_name" (click)="selectModelMapping(map.model)">
+                  <span class="material-symbols-outlined">account_tree</span>
+                  <span>{{ map.model }}</span>
                 </div>
+
+                @if(state.selectedModelMapping() === map.model) {
+                  <div class="model_field_mappings">
+                    @for (field of map.fields; track $index) {
+                      <app-field-mapping
+                        [dataset]="store.selectedDataset()"
+                        [modelName]="map.model"
+                        [fieldMapping]="field"
+                      />
+                    }
+                  </div>
+                }
+
               </div>
             }
           }

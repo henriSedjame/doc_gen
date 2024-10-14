@@ -1,7 +1,11 @@
-
+:host {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
 
 .model_bloc {
-  width: 500px;
+  width: 90%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -65,15 +69,16 @@
   .btn_bloc {
     width: 100%;
     display: flex;
-    justify-content: end;
+    justify-content: center;
     align-items: center;
-    margin-top: 20px;
-    border-top: 1px solid blueviolet;
+    margin-top: 10px;
     padding-top: 10px;
 
     &.center {
+      margin-top: 20px;
       justify-content: center;
     }
+
   }
 }
 
@@ -85,12 +90,16 @@
   align-items: start;
   justify-content: center;
 
+  .field_line {
+    width: 100%;
+    display: flex;
+  }
+
   .field_bloc{
     width: calc(100% - 20px);
 
     .field_name {
       font-weight: bold;
-      cursor: pointer;
     }
 
     .model {
@@ -112,15 +121,20 @@
 
   }
 
+  .field_description {
+    width: 100%;
+    font-size: 0.9rem;
+    font-style: italic;
+    color: #505050;
+  }
+
   .field_btns {
     width: 120px;
     display: flex;
     justify-content: space-between;
     gap: 5px;
     padding: 3px 5px;
-    background-color: #f1f8f1;
-    border-radius: 5px;
-    border: 1px solid blueviolet;
+
 
     .edit_icon {
       color: blueviolet;
@@ -170,7 +184,8 @@
       font-size: 0.5rem;
       font-weight: bold;
       color: blueviolet;
-      top: -10px;
+      top: -18px;
+      left: 5px;
     }
   }
 

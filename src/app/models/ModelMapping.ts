@@ -3,11 +3,11 @@ import {Tree} from "./common";
 
 
 export type ModelMapping<T extends Model> = {
-    [K in keyof T]: FieldMapping<T[K]>;
+    [K in keyof T]: FieldMapping<T[K]['type']>;
 }
 
 export type FieldMapping<T extends Model | FieldType> = {
-    [K in keyof T]: T extends Model ? FieldMapping<T[K]> : SingleFieldMapping;
+    [K in keyof T]: T extends Model ? FieldMapping<T[K]['type']> : SingleFieldMapping;
 }
 
 export type SingleFieldMapping = {

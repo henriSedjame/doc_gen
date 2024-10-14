@@ -1,0 +1,122 @@
+.mapping_bloc {
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-bottom: 10px;
+
+  .field_name {
+    font-weight: bold;
+    font-style: italic;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px;
+    span {
+      cursor: pointer;
+    }
+  }
+}
+
+.form_bloc {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.form_container {
+
+  width: 50%;
+  background-color: #a4f6ca;
+  padding: 15px 15px 20px 15px;
+  border-radius: 5px;
+
+  .form_title {
+    width: 100%;
+    text-align: center;
+    color: white;
+    font-family: "Al Bayan", sans-serif;
+    font-size: 1.1rem;
+    text-shadow: 1px 1px 1px #505050;
+  }
+
+  .form_field {
+    position: relative;
+    margin: 10px 0;
+
+    .label {
+      position: absolute;
+      font-size: 0.5rem;
+      font-weight: bold;
+      color: blueviolet;
+      top: -18px;
+      left: 5px;
+    }
+  }
+
+  .form_btns {
+    display: flex;
+    justify-content: space-between;
+    gap: 5px;
+
+    .btn {
+      flex: 1;
+    }
+  }
+}
+
+.mapping_view {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+
+  .mapping_view_bloc {
+    width: 70%;
+    .mapping_field_line {
+      display: flex;
+      justify-content: start;
+      align-items: center;
+      padding: 5px;
+
+      border-bottom: 1px solid #d3d3d3;
+
+      .mapping_field_name {
+        font-weight: bold;
+        font-style: italic;
+        flex: 1;
+        color: gray;
+      }
+
+      .mapping_field_value {
+        flex: 3;
+        background-color: rgba(216, 216, 216, 0.8);
+        padding: 2px 5px;
+        color: #292929;
+
+        span {
+          height: 100%;
+        }
+        .arrow {
+          color: black;
+          margin-top: 5px;
+
+          padding: 0 3px;
+        }
+        &.large {
+          height: 100px;
+        }
+      }
+    }
+
+  }
+  .edit_icon {
+    cursor: pointer;
+    padding: 8px;
+    background-color: white;
+    color: blueviolet;
+    border-radius: 50%;
+    box-shadow: 1px 1px 2px #505050;
+  }
+}
+
+

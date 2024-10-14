@@ -2,9 +2,8 @@ import {addField, AddFieldModel, FieldType, Model, removeField} from './models/M
 import {signalStore, withComputed, withMethods, withState} from '@ngrx/signals';
 import {updateState, withDevtools} from '@angular-architects/ngrx-toolkit';
 import {computed} from '@angular/core';
-import {FieldTypeOption} from './models/common';
+import {AddFieldReq, FieldTypeOption, UpdateFieldReq} from './models/common';
 import {comment, isSimpleFieldType} from './utils';
-
 
 const STATE_KEY = 'app_state';
 
@@ -22,10 +21,26 @@ export type IndexedModel = {
 
 export type AddDataType = 'dataset' | 'model';
 
+export type SimpleMapping = {
+  originTree: string,
+  description: string
+}
+
+export type ComplexMapping = {
+  branches: MappingBranch[]
+}
+
+export type MappingBranch = {
+  condition: string;
+  mapping: SimpleMapping | ComplexMapping;
+  otherwise: SimpleMapping | ComplexMapping;
+}
+
 export type FieldMapping = {
   fieldName: string;
-  mapping: string;
+  mapping: SimpleMapping | ComplexMapping | null;
 }
+
 export type DatasetMapping = {
   dataset: string,
   mappings: FieldMapping[]
@@ -37,6 +52,8 @@ export type AppState = {
   mappings: DatasetMapping[];
   indexedModels: IndexedModel[];
   selectedIndex: number | null;
+  selectedDataset: string | null;
+  selectedFieldMapping: string | null;
   addingNewModel: boolean;
   addDataType: AddDataType | null;
 }
@@ -47,6 +64,8 @@ export const initialState: AppState = {
   mappings: [],
   indexedModels: [],
   selectedIndex: null,
+  selectedDataset: null,
+  selectedFieldMapping: null,
   addingNewModel: false,
   addDataType: null
 }
@@ -58,7 +77,10 @@ export const AppStore = signalStore(
     const storedState = localStorage.getItem(STATE_KEY);
     localStorage.removeItem(STATE_KEY);
     if (storedState) {
-      return JSON.parse(storedState) as AppState;
+      return { ... JSON.parse(storedState),
+        selectedDataset: null,
+        selectedFieldMapping : null
+      } as AppState;
     }
     return initialState
   }),
@@ -119,7 +141,7 @@ export const AppStore = signalStore(
       }
     },
 
-    addField(index: number, field: { key: string, type: string | FieldType }) {
+    addField(index: number, field: AddFieldReq) {
 
       let model = comment('Find model with name equal to field type',
         () => state.models().filter(m => m.name === field.type)?.[0]);
@@ -129,7 +151,7 @@ export const AppStore = signalStore(
 
       this._update(index, {
         type: 'add',
-        value: { key: field.key, type: type },
+        value: { key: field.key, type: type, description: field.comment },
         indexedName: model?.name
       })
 
@@ -143,13 +165,12 @@ export const AppStore = signalStore(
                 ...mapping,
                 mappings: mapping.mappings = [
                   ...mapping.mappings,
-                  {fieldName: `${model.name}.${field.key}`, mapping: ''}
+                  {fieldName: `${model.name}.${field.key}`, mapping: null}
                 ]
               };
             })
           })
         }
-
       })
     },
 
@@ -164,6 +185,52 @@ export const AppStore = signalStore(
               ...mapping,
               mappings: mapping.mappings =  mapping.mappings.filter(m => m.fieldName !== fieldName),
             };
+          })
+        })
+      })
+    },
+
+    updateField(req: UpdateFieldReq) {
+      const {index, oldKey, newField} = req;
+
+      const model = comment('Get the model to update', () => state.models()[index])
+
+      const type = comment('Get the type of the new field', () => {
+        return state.models().find(m => m.name === newField.type)?.value ?? (newField.type as FieldType)
+      });
+
+      comment('update the models and mappings', () => {
+        updateState(state, 'update field', {
+          models: state.models().map(m => {
+            if (m.name === model.name) {
+              let model: Model = {}
+
+              Object.entries(m.value).forEach(([key, value]) => {
+                if (key === oldKey) {
+                  model[newField.key] = {
+                    description: newField.comment,
+                    type: type
+                  };
+                } else {
+                  model[key] = value;
+                }
+              })
+
+              return {
+                name: m.name,
+                value: model
+              }
+            }
+            return m;
+          }),
+          mappings: state.mappings().map(mapping => {
+            mapping.mappings = mapping.mappings.map(m => {
+              if(m.fieldName === `${model.name}.${oldKey}`) {
+                m.fieldName = `${model.name}.${newField.key}`
+              }
+              return m
+            })
+            return  mapping
           })
         })
       })
@@ -221,10 +288,17 @@ export const AppStore = signalStore(
     },
 
     delete(index: number) {
+      const model = comment('Get the model to update', () => state.models()[index])
       updateState(state, 'delete', {
         models: state.models().filter((_, i) => i !== index),
         indexedModels: state.indexedModels().filter((_, i) => i !== index),
-        selectedIndex: state.selectedIndex() === index ? null : state.selectedIndex()
+        selectedIndex: state.selectedIndex() === index ? null : state.selectedIndex(),
+        mappings: state.mappings().map(mapping => {
+          return {
+            ...mapping,
+            mappings: mapping.mappings.filter(m => !m.fieldName.startsWith(`${model.name}.`))
+          }
+        })
       })
     },
 
@@ -251,8 +325,8 @@ export const AppStore = signalStore(
               dataset: name.toLowerCase(),
               mappings: [
                 ...state.models().map(model => {
-                  return Object.keys(model.value).filter(k => isSimpleFieldType(model.value[k])).map(key => {
-                    return {fieldName: `${model.name}.${key}`, mapping: ''}
+                  return Object.keys(model.value).filter(k => isSimpleFieldType(model.value[k].type)).map(key => {
+                    return {fieldName: `${model.name}.${key}`, mapping: null}
                   })
                 }).flat(1)
               ]
@@ -268,6 +342,34 @@ export const AppStore = signalStore(
         mappings: state.mappings().filter(m => m.dataset !== dataset)
       })
     },
+
+    updateMapping(dataset: string, mapping: FieldMapping) {
+      const mappings = state.mappings().map(m => {
+        if(m.dataset === dataset) {
+          m.mappings = m.mappings.map(f => {
+            if (f.fieldName === mapping.fieldName) {
+              f.mapping = mapping.mapping
+            }
+            return f;
+          })
+        }
+        return m;
+      })
+
+      updateState(state, 'update mapping', { mappings })
+    },
+
+    selectDataset(dataset: string) {
+      updateState(state, 'select dataset', { selectedDataset : ( dataset === '' || state.selectedDataset() === dataset ) ? null : dataset })
+      if (dataset === '') {
+        updateState(state, 'clear selected fieldMapping',  { selectedFieldMapping:  null})
+      }
+    },
+
+    selectFieldMapping(field: string) {
+      updateState(state, 'select field mapping',  { selectedFieldMapping : field === state.selectedFieldMapping() ? null : field })
+    },
+
     storeState() {
 
       const object = {};
